@@ -6,6 +6,18 @@
 #include "EnhancedInputSubsystems.h"
 #include "Aura/Aura.h"
 
+AMPlayerController::AMPlayerController()
+{
+	bReplicates = true;
+}
+
+void AMPlayerController::TickActor(float DeltaTime, ELevelTick TickType, FActorTickFunction& ThisTickFunction)
+{
+	Super::TickActor(DeltaTime, TickType, ThisTickFunction);
+
+	CurrentHoveredActor = CurrentClickablePrimitive.IsValid() ? CurrentClickablePrimitive->GetOwner() : nullptr;
+}
+
 void AMPlayerController::BeginPlay()
 {
 	Super::BeginPlay();

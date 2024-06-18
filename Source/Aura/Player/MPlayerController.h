@@ -13,7 +13,14 @@ class AURA_API AMPlayerController: public APlayerController
 {
 	GENERATED_BODY()
 
+public:
+
+	AMPlayerController();
+	
+	virtual void TickActor(float DeltaTime, ELevelTick TickType, FActorTickFunction& ThisTickFunction) override;
+	
 protected:
+
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 	
@@ -24,6 +31,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mapping")
 	TObjectPtr<UInputMappingContext> PlayerContext;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mapping")	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mapping")
 	TObjectPtr<UInputAction> MoveAction;
+
+	TWeakObjectPtr<AActor> CurrentHoveredActor = nullptr;
+
 };

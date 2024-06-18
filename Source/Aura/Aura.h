@@ -31,3 +31,5 @@
 #define RETURN_VALUE_IF_NOT_VALID_ENSURE(Object, Value)	if (!IsValid(Object))		{ ensure(false); return Value; }
 #define RETURN_VALUE_IF_TRUE_ENSURE(Expression, Value)	if ((Expression) == true)	{ ensure(false); return Value; }
 #define RETURN_VALUE_IF_FALSE_ENSURE(Expression, Value)	if ((Expression) == false)	{ ensure(false); return Value; }
+
+DECLARE_LOG_CATEGORY_EXTERN(LogHighlight, Log, All)

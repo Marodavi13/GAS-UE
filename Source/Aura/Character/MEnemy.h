@@ -8,7 +8,7 @@
 
 class UMHighlightComponent;
 
-UCLASS()
+UCLASS(Abstract)
 class AURA_API AMEnemy: public AMCharacterBase
 {
 	GENERATED_BODY()
@@ -17,9 +17,11 @@ public:
 	
 	AMEnemy();
 
-
+	
 protected:
 
 	UPROPERTY(VisibleAnywhere, Category ="Component")
-	TObjectPtr<UMHighlightComponent> HighlightComponent;
+	TObjectPtr<UMHighlightComponent> HighlightComponent = nullptr;
+
+	virtual void BeginPlay() override;
 };

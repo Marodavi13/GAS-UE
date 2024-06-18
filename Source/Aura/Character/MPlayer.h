@@ -12,6 +12,7 @@ class AURA_API AMPlayer: public AMCharacterBase
 	GENERATED_BODY()
 
 public:
+	
 	AMPlayer();
 
 };

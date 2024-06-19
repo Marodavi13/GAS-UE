@@ -17,7 +17,7 @@ public:
 	
 	AMEnemy();
 
-	
+	virtual void PostInitializeComponents() override;
 protected:
 
 	UPROPERTY(VisibleAnywhere, Category ="Component")

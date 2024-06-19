@@ -19,7 +19,7 @@ UAbilitySystemComponent* AMPlayerState::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-UAttributeSet* AMPlayerState::GetAttributeSet() const
+UMAttributeSet* AMPlayerState::GetAttributeSet() const
 {
 	return AttributeSet;
 }

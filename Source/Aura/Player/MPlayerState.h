@@ -7,8 +7,8 @@
 #include "GameFramework/PlayerState.h"
 #include "MPlayerState.generated.h"
 
-class UAttributeSet;
-class UAbilitySystemComponent;
+class UMAttributeSet;
+class UMAbilitySystemComponent;
 /**
  * 
  */
@@ -20,17 +20,16 @@ class AURA_API AMPlayerState: public APlayerState, public IAbilitySystemInterfac
 public:
 	
 	AMPlayerState();
-
 	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	UAttributeSet* GetAttributeSet() const;
+	UMAttributeSet* GetAttributeSet() const;
 	
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent = nullptr;
+	TObjectPtr<UMAbilitySystemComponent> AbilitySystemComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
-	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
+	TObjectPtr<UMAttributeSet> AttributeSet = nullptr;
 };

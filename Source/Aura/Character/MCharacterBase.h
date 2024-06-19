@@ -30,8 +30,8 @@ protected:
 	TObjectPtr<USkeletalMeshComponent> Weapon = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent = nullptr;
+	TObjectPtr<UMAbilitySystemComponent> AbilitySystemComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
-	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
+	TObjectPtr<UMAttributeSet> AttributeSet = nullptr;
 };

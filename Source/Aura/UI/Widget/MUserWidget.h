@@ -19,7 +19,11 @@ public:
 	UPROPERTY(Transient, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UObject> WidgetController;
 
-	void SetWidgetController(UObject* NewController);
+	// if true the parent widget 
+	UPROPERTY(EditAnywhere, Category = "UI")
+	bool bAutoSetParentController = false;
+
+	void SetWidgetController(UObject* NewController, bool bIncludeChildren = false);
 	
 protected:
 

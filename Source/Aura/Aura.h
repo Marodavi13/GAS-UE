@@ -33,3 +33,6 @@
 #define RETURN_VALUE_IF_FALSE_ENSURE(Expression, Value)	if ((Expression) == false)	{ ensure(false); return Value; }
 
 DECLARE_LOG_CATEGORY_EXTERN(LogHighlight, Log, All)
+
+
+#define ECC_HIGHLIGHT ECC_GameTraceChannel1

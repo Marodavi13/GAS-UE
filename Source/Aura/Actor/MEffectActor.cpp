@@ -35,7 +35,7 @@ void AMEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 	const UAbilitySystemComponent* Ability = AbilityInterface->GetAbilitySystemComponent();
 	const UMAttributeSet* Attributes = Cast<UMAttributeSet>(Ability->GetAttributeSet(UMAttributeSet::StaticClass()));
 
-	const_cast<UMAttributeSet*>(Attributes)->SetHealth(Attributes->GetHealth() + 25.f);
+	const_cast<UMAttributeSet*>(Attributes)->SetMana(Attributes->GetHealth() + 25.f);
 	Destroy();
 }
 

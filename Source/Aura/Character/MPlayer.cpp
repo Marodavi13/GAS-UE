@@ -4,7 +4,9 @@
 
 #include "Aura/Aura.h"
 #include "Aura/AbilitySystem/MAbilitySystemComponent.h"
+#include "Aura/Player/MPlayerController.h"
 #include "Aura/Player/MPlayerState.h"
+#include "Aura/UI/MHUD.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 AMPlayer::AMPlayer()
@@ -26,10 +28,17 @@ void AMPlayer::InitAbilitySystem()
 	AMPlayerState* MPlayerState = GetPlayerState<AMPlayerState>();
 	RETURN_IF_NOT_VALID_ENSURE(MPlayerState);
 	
-	AbilitySystemComponent = MPlayerState->GetAbilitySystemComponent();
+	AbilitySystemComponent = Cast<UMAbilitySystemComponent>(MPlayerState->GetAbilitySystemComponent());
 	AttributeSet = MPlayerState->GetAttributeSet();
 	
 	AbilitySystemComponent->InitAbilityActorInfo(MPlayerState, this);
+
+	AMPlayerController* PlayerController = GetController<AMPlayerController>();
+	RETURN_IF_NOT_VALID(PlayerController);
+
+	AMHUD* HUD = PlayerController->GetHUD<AMHUD>();
+
+	HUD->InitHUD(PlayerController, MPlayerState, AbilitySystemComponent, AttributeSet);
 }
 
 void AMPlayer::PossessedBy(AController* NewController)

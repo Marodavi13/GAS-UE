@@ -2,6 +2,7 @@
 
 #include "MEnemy.h"
 
+#include "Aura/Aura.h"
 #include "Aura/AbilitySystem/MAbilitySystemComponent.h"
 #include "Aura/AbilitySystem/MAttributeSet.h"
 #include "Aura/Component/MHighlightComponent.h"
@@ -11,13 +12,18 @@ AMEnemy::AMEnemy()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Overlap);
 	HighlightComponent = CreateDefaultSubobject<UMHighlightComponent>(TEXT("Highlight Component"));
 
 	AbilitySystemComponent = CreateDefaultSubobject<UMAbilitySystemComponent>(TEXT("Ability System Component"));
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	AttributeSet = CreateDefaultSubobject<UMAttributeSet>(TEXT("Attribute Set"));
+}
+
+void AMEnemy::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_HIGHLIGHT, ECR_Block);
 }
 
 void AMEnemy::BeginPlay()

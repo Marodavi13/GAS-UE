@@ -34,4 +34,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	TObjectPtr<UMAttributeSet> AttributeSet = nullptr;
+
+
+	void InitAbilitySystem();
+	virtual void InitAbilitySystem_Internal(){}
+	
+
 };

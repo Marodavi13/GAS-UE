@@ -29,7 +29,11 @@ void AMEnemy::PostInitializeComponents()
 void AMEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	InitAbilitySystem();
+}
 
+void AMEnemy::InitAbilitySystem_Internal()
+{
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 

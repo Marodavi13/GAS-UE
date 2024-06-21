@@ -5,42 +5,79 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "Aura/Aura.h"
-#include "Aura/AbilitySystem/MAttributeSet.h"
-#include "Components/SphereComponent.h"
 
 AMEffectActor::AMEffectActor()
 {
-
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	SetRootComponent(Mesh);
-
-	EffectCollider = CreateDefaultSubobject<USphereComponent>(TEXT("Effect Collider"));
-	EffectCollider->SetupAttachment(Mesh);
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot")));
 }
 
-void AMEffectActor::PostInitializeComponents()
+void AMEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
-	Super::PostInitializeComponents();
+	UAbilitySystemComponent* AbilitySystemComp = GetAbilitySystemComponent(TargetActor);
+	RETURN_IF_NOT_VALID(AbilitySystemComp);
+	RETURN_IF_NULL_ENSURE(GameplayEffectClass);
 
-	EffectCollider->OnComponentBeginOverlap.AddUniqueDynamic(this, &AMEffectActor::OnBeginOverlap);
-	EffectCollider->OnComponentEndOverlap.AddUniqueDynamic(this, &AMEffectActor::OnEndOverlap);
-}
+	FGameplayEffectContextHandle ContextHandle = AbilitySystemComp->MakeEffectContext();
+	ContextHandle.AddSourceObject(this);
+	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComp->MakeOutgoingSpec(GameplayEffectClass, ActorLevel, ContextHandle);
+	const FActiveGameplayEffectHandle Handle = AbilitySystemComp->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 
-void AMEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	IAbilitySystemInterface* AbilityInterface = Cast<IAbilitySystemInterface>(OtherActor);
-	RETURN_IF_NULL(AbilityInterface);
-
-	const UAbilitySystemComponent* Ability = AbilityInterface->GetAbilitySystemComponent();
-	const UMAttributeSet* Attributes = Cast<UMAttributeSet>(Ability->GetAttributeSet(UMAttributeSet::StaticClass()));
-
-	const_cast<UMAttributeSet*>(Attributes)->SetMana(Attributes->GetHealth() + 25.f);
-	Destroy();
-}
-
-void AMEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
+	RETURN_IF_FALSE(SpecHandle.Data.Get()->Def->DurationPolicy == EGameplayEffectDurationType::Infinite &&
+					InfiniteEffectRemovalPolicy == EMEffectPolicy::OnEndOverlap);
 	
+	ActiveGameplayEffectHandles.Add(Handle, AbilitySystemComp);
+}
+
+void AMEffectActor::OnBeginOverlap(AActor* TargetActor)
+{
+	if (InstantEffectApplicationPolicy == EMEffectPolicy::OnBeginOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);
+	}
+
+	if (DurationEffectApplicationPolicy == EMEffectPolicy::OnBeginOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass);
+	}
+
+	if (InfiniteEffectApplicationPolicy == EMEffectPolicy::OnBeginOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass);
+	}
+}
+
+void AMEffectActor::OnEndOverlap(AActor* TargetActor)
+{
+	if (InstantEffectApplicationPolicy == EMEffectPolicy::OnEndOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);
+	}
+	
+	if (DurationEffectApplicationPolicy == EMEffectPolicy::OnEndOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass);
+	}
+
+	if (InfiniteEffectApplicationPolicy == EMEffectPolicy::OnEndOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass);
+	}
+	
+	if(InfiniteEffectRemovalPolicy == EMEffectPolicy::OnEndOverlap)
+	{
+		UAbilitySystemComponent* AbilitySystemComponent = GetAbilitySystemComponent(TargetActor);
+		RETURN_IF_NOT_VALID(AbilitySystemComponent);
+
+		for(auto It = ActiveGameplayEffectHandles.CreateIterator(); It; ++It)
+		{
+			if(It.Value() != AbilitySystemComponent)
+			{
+				continue;
+			}
+
+			AbilitySystemComponent->RemoveActiveGameplayEffect(It.Key(), 1);
+			It.RemoveCurrent();
+			break;
+		}
+	}
 }

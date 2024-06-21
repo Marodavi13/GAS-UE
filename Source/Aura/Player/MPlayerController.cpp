@@ -30,7 +30,7 @@ void AMPlayerController::InitPlayerInput()
 
 	// set the player context
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	RETURN_IF_NOT_VALID_ENSURE(Subsystem);
+	RETURN_IF_NOT_VALID(Subsystem);
 	Subsystem->AddMappingContext(PlayerContext, 0);
 
 	// Show mouse

@@ -21,8 +21,6 @@ protected:
 
 	virtual void OnRep_PlayerState() override;
 
-private:
-
-	void InitAbilitySystem();
+	virtual void InitAbilitySystem_Internal() override;
 
 };

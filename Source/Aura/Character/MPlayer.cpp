@@ -23,7 +23,7 @@ AMPlayer::AMPlayer()
 	bUseControllerRotationYaw = false;
 }
 
-void AMPlayer::InitAbilitySystem()
+void AMPlayer::InitAbilitySystem_Internal()
 {
 	AMPlayerState* MPlayerState = GetPlayerState<AMPlayerState>();
 	RETURN_IF_NOT_VALID_ENSURE(MPlayerState);
@@ -37,7 +37,7 @@ void AMPlayer::InitAbilitySystem()
 	RETURN_IF_NOT_VALID(PlayerController);
 
 	AMHUD* HUD = PlayerController->GetHUD<AMHUD>();
-
+	RETURN_IF_NOT_VALID(HUD);
 	HUD->InitHUD(PlayerController, MPlayerState, AbilitySystemComponent, AttributeSet);
 }
 
@@ -54,5 +54,4 @@ void AMPlayer::OnRep_PlayerState()
 
 	InitAbilitySystem();
 }
-
 

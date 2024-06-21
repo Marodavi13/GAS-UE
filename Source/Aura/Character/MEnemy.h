@@ -24,4 +24,6 @@ protected:
 	TObjectPtr<UMHighlightComponent> HighlightComponent = nullptr;
 
 	virtual void BeginPlay() override;
+
+	virtual void InitAbilitySystem_Internal() override;
 };

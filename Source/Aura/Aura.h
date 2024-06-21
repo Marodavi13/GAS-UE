@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 #define RETURN_IF_NULL(Object)		if (Object == nullptr)		{ return; }
 #define RETURN_IF_NOT_NULL(Object)	if (Object != nullptr)		{ return; }
@@ -32,7 +33,20 @@
 #define RETURN_VALUE_IF_TRUE_ENSURE(Expression, Value)	if ((Expression) == true)	{ ensure(false); return Value; }
 #define RETURN_VALUE_IF_FALSE_ENSURE(Expression, Value)	if ((Expression) == false)	{ ensure(false); return Value; }
 
+class UAbilitySystemComponent;
 DECLARE_LOG_CATEGORY_EXTERN(LogHighlight, Log, All)
 
-
 #define ECC_HIGHLIGHT ECC_GameTraceChannel1
+
+
+template<class T>
+T* GetComponent(AActor* From)
+{
+	return IsValid(From) ? From->GetComponentByClass<T>() : nullptr;
+}
+
+template<class T = UAbilitySystemComponent>
+T* GetAbilitySystemComponent(AActor* From)
+{
+	return Cast<T>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(From));
+}

@@ -22,5 +22,11 @@ UAttributeSet* AMCharacterBase::GetAttributeSet() const
 	return AttributeSet;
 }
 
+void AMCharacterBase::InitAbilitySystem()
+{
+	InitAbilitySystem_Internal();
+	AbilitySystemComponent->OnAbilityActorInfoSet();
+}
+
 
 

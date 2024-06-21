@@ -13,5 +13,14 @@ class AURA_API UMAbilitySystemComponent: public UAbilitySystemComponent
 	GENERATED_BODY()
 
 public:
+
 	UMAbilitySystemComponent();
+
+
+	void OnAbilityActorInfoSet();
+
+protected:
+
+	void OnEffectAplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle);
+
 };

@@ -11,6 +11,46 @@
 		GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 		GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 		GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+
+USTRUCT(BlueprintType)
+struct FMEffectProperties
+{
+	GENERATED_BODY()
+
+	FMEffectProperties(){}
+
+	FMEffectProperties(const FGameplayEffectModCallbackData& Data);
+	UPROPERTY(BlueprintReadOnly, Category="Effects")
+	TObjectPtr<UAbilitySystemComponent> SourceASC = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, Category="Effects")
+	TObjectPtr<UAbilitySystemComponent> TargetASC = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category="Effects")
+	TObjectPtr<AActor> SourceAvatar = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category="Effects")
+	TObjectPtr<AActor> TargetAvatar = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category="Effects")
+	TObjectPtr<AController> SourceController = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, Category="Effects")
+	TObjectPtr<AController> TargetController = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category="Effects")
+	TObjectPtr<ACharacter> SourceCharacter = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, Category="Effects")
+	TObjectPtr<ACharacter> TargetCharacter = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category="Effects")
+	FGameplayEffectContextHandle ContextHandle;
+
+	void SetSourceProperties(UAbilitySystemComponent* AbilitySystem);
+
+	void SetTargetProperties(UAbilitySystemComponent* AbilitySystem);
+};
 /**
  * 
  */
@@ -41,7 +81,8 @@ public:
 	ATTRIBUTE_ACCESSORS(UMAttributeSet, MaxMana);
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 protected:
 	
 	UFUNCTION()

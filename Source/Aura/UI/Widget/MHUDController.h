@@ -7,8 +7,26 @@
 #include "Aura/UI/MWidgetController.h"
 #include "MHUDController.generated.h"
 
-
+class UMUserWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMOnStatChanged, float, NewStatValue);
+
+USTRUCT()
+struct FUIWidgetRow: public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
+	FGameplayTag AssetTag;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
+	FText Message;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
+	TSubclassOf<UMUserWidget> MessageWidgetClass = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
+	TObjectPtr<UTexture2D> Texture = nullptr;
+};
 /**
  *  Widget Controller for the player HUD 
  */
@@ -37,12 +55,12 @@ public:
 
 protected:
 
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI Data")
+	TObjectPtr<UDataTable> MessageWidgetDataTable = nullptr;
+	
 	void HealthChanged(const FOnAttributeChangeData& Data);
 	void MaxHealthChanged(const FOnAttributeChangeData& Data);
 	void ManaChanged(const FOnAttributeChangeData& Data);
 	void MaxManaChanged(const FOnAttributeChangeData& Data);
-
-
 
 };

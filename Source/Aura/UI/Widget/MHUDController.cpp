@@ -19,6 +19,13 @@ void UMHUDController::BindAttributesCallbacks()
 
 	AbilitySystem->GetGameplayAttributeValueChangeDelegate(
 	Attributes->GetMaxManaAttribute()).AddUObject(this, &UMHUDController::MaxManaChanged);
+
+	AbilitySystem->OnEffectAppliedDelegate.AddLambda(
+		[this](const FGameplayTagContainer& AssetTags)
+		{
+			RETURN_IF_NULL(MessageWidgetDataTable);
+		}
+	);
 }
 
 void UMHUDController::HealthChanged(const FOnAttributeChangeData& Data)

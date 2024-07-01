@@ -7,6 +7,7 @@
 
 #include "MAbilitySystemComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FMEffectAssetTags, const FGameplayTagContainer& /* Asset tags */);
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class AURA_API UMAbilitySystemComponent: public UAbilitySystemComponent
 {
@@ -16,11 +17,12 @@ public:
 
 	UMAbilitySystemComponent();
 
+	FMEffectAssetTags OnEffectAppliedDelegate;
 
 	void OnAbilityActorInfoSet();
 
 protected:
 
-	void OnEffectAplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle);
+	void OnEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle);
 
 };

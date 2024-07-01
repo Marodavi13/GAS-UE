@@ -3,7 +3,6 @@
 #include "MAbilitySystemComponent.h"
 
 #include "Aura/Utils/MDebugUtils.h"
-#include "Aura/Utils/MUtils.h"
 
 UMAbilitySystemComponent::UMAbilitySystemComponent()
 {
@@ -13,13 +12,15 @@ UMAbilitySystemComponent::UMAbilitySystemComponent()
 
 void UMAbilitySystemComponent::OnAbilityActorInfoSet()
 {
-	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UMAbilitySystemComponent::OnEffectAplied);
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UMAbilitySystemComponent::OnEffectApplied);
 }
 
-void UMAbilitySystemComponent::OnEffectAplied(UAbilitySystemComponent* AbilitySystemComponent,
-	const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle)
+void UMAbilitySystemComponent::OnEffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
+	const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle)
 {
-	UMDebugUtils::LogOnScreen(this, TEXT("Effect!"));
+	FGameplayTagContainer TagContainer;
+	EffectSpec.GetAllAssetTags(TagContainer);
+	OnEffectAppliedDelegate.Broadcast(TagContainer);
 }
 
 

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffectTypes.h"
+#include "Aura/Aura.h"
 #include "Aura/UI/MWidgetController.h"
 #include "MHUDController.generated.h"
 
@@ -63,4 +64,15 @@ protected:
 	void ManaChanged(const FOnAttributeChangeData& Data);
 	void MaxManaChanged(const FOnAttributeChangeData& Data);
 
+	template<typename T>
+	T* GetDataTableRowByTag(UDataTable* DataTAble, const FGameplayTag& Tag);
+
 };
+
+template<typename T = FTableRowBase>
+T* UMHUDController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
+{
+	RETURN_VALUE_IF_NULL(DataTable, nullptr);
+	T* Row = DataTable->FindRow<T>(Tag.GetTagName(), TEXT(""));
+	return Row;
+}

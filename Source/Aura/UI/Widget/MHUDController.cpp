@@ -24,6 +24,11 @@ void UMHUDController::BindAttributesCallbacks()
 		[this](const FGameplayTagContainer& AssetTags)
 		{
 			RETURN_IF_NULL(MessageWidgetDataTable);
+
+			for(auto Tag : AssetTags)
+			{
+				FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+			}
 		}
 	);
 }

@@ -27,7 +27,12 @@ void UMHUDController::BindAttributesCallbacks()
 
 			for(auto Tag : AssetTags)
 			{
-				FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+				const FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(TEXT("UI.Message"));
+				RETURN_IF_FALSE(Tag.MatchesTag(MessageTag));
+				
+				const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+				RETURN_IF_NULL(Row);
+				OnEffectAppliedUIMessage.Broadcast(*Row);
 			}
 		}
 	);

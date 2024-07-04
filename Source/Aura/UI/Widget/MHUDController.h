@@ -9,7 +9,6 @@
 #include "MHUDController.generated.h"
 
 class UMUserWidget;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMOnStatChanged, float, NewStatValue);
 
 USTRUCT()
 struct FUIWidgetRow: public FTableRowBase
@@ -28,6 +27,10 @@ struct FUIWidgetRow: public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
 	TObjectPtr<UTexture2D> Texture = nullptr;
 };
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMOnStatChanged, float, NewStatValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
+
 /**
  *  Widget Controller for the player HUD 
  */
@@ -50,6 +53,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FMOnStatChanged OnMaxManaChanged;
 
+	UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
+	FMessageWidgetRowSignature OnEffectAppliedUIMessage;
+	
 	virtual void BroadcastInitialValues() override;
 	
 	void BindAttributesCallbacks();
@@ -69,7 +75,7 @@ protected:
 
 };
 
-template<typename T = FTableRowBase>
+template<typename T>
 T* UMHUDController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
 {
 	RETURN_VALUE_IF_NULL(DataTable, nullptr);

@@ -34,5 +34,4 @@ void AMHUD::InitHUD(AMPlayerController* PC, AMPlayerState* PS, UMAbilitySystemCo
 	
 	HUDWidget->AddToViewport();
 
-	
 }
